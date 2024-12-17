@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>recipe</title>
+ {% endblock %}
+ {% block body_block %}
+
+ <div class="container mt-5">
+  {% for msg in  messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{request.user}} {{msg}}</strong> 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+        <h1>this is recipe page</h1>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Recipr_Name</label>
+          <input type="text" class="form-control" name="recipe_name">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Recipe_Description</label>
+          <textarea class="form-control" name="recipe_description"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Recipe_Image</label>
+            <input type="file" class="form-control" name="recipe_image">
+          </div>
+        <button type="submit" class="btn btn-success btn-sm">Add Recipe</button>
+      </form>
+      <div class="m-3 d-flex justify-content-center">
+        <form method='get' action="" class="form-inline my-2 my-sm-0">
+            <div class="input-group">
+                <input class="form-control" name="search" type="text" placeholder="SearchByTask" aria-label="Search">
+                <div class="input-group-append m-1">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+      <table class="table">
+        <thead>
+          <tr>
+            
+            <th scope="col">#</th>
+            <th scope="col">Recipe_Name</th>
+            <th scope="col">Recipe_Description</th>
+            <th scope="col">Recipe_Image</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for ro in r_obj %}
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{ro.recipe_name}}</td>
+            <td>{{ro.recipe_description}}</td>
+            <td><img src="/media/{{ro.recipe_image}}" style="height: 100px"></td>
+            <td>
+              <a href="{% url 'deleteRecipe' id=ro.id %}" class="btn btn-danger m-2">Delete</a>&nbsp;&nbsp;
+              <a href="{% url 'updateRecipe' id=ro.id %}" class="btn btn-warning">Update</a>
+            </td>
+            
+          </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+ </div>
+ 
+
+
+{% endblock %}
